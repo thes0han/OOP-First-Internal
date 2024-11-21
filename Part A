@@ -1,0 +1,45 @@
+class GradeCalculator:
+    def __init__(self):
+        self.grades = []
+        self.weights = []
+
+    def add_grade(self, grade, weight):
+        """Add a grade and its corresponding weight."""
+        self.grades.append(grade)
+        self.weights.append(weight)
+
+    def calculate_final_score(self):
+        """Calculate the final score based on weighted averages."""
+        if len(self.grades) == 0 or len(self.weights) == 0:
+            raise ValueError("No grades or weights added.")
+
+        total_weight = sum(self.weights)
+        if total_weight == 0:
+            raise ValueError("Total weight cannot be zero.")
+
+        weighted_sum = sum(grade * weight for grade, weight in zip(self.grades, self.weights))
+        final_score = weighted_sum / total_weight
+        return final_score
+
+def main():
+    calculator = GradeCalculator()
+
+    while True:
+        try:
+            grade = float(input("Enter the grade (or type 'done' to finish): "))
+            weight = float(input("Enter the weight for this grade: "))
+            calculator.add_grade(grade, weight)
+        except ValueError as e:
+            if str(e) == "could not convert string to float: 'done'":
+                break
+            else:
+                print("Invalid input. Please enter numeric values for grades and weights.")
+
+    try:
+        final_score = calculator.calculate_final_score()
+        print(f"The final weighted score is: {final_score:.2f}")
+    except ValueError as e:
+        print(e)
+
+if __name__ == "__main__":
+    main()
