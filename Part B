@@ -1,0 +1,66 @@
+class Activity:
+    def __init__(self, name, time):
+        self.name = name
+        self.time = time
+
+    def __str__(self):
+        return f"{self.name} at {self.time}"
+
+class Destination:
+    def __init__(self, name, activities=None):
+        self.name = name
+        self.activities = activities if activities is not None else []
+
+    def add_activity(self, activity):
+        self.activities.append(activity)
+
+    def __str__(self):
+        activities_str = ', '.join(str(activity) for activity in self.activities)
+        return f"Destination: {self.name}, Activities: [{activities_str}]"
+
+class Trip:
+    def __init__(self, trip_name, start_date, end_date):
+        self.trip_name = trip_name
+        self.start_date = start_date
+        self.end_date = end_date
+        self.destinations = []
+
+    def add_destination(self, destination):
+        self.destinations.append(destination)
+
+    def __str__(self):
+        destinations_str = '\n'.join(str(destination) for destination in self.destinations)
+        return (f"Trip: {self.trip_name}\n"
+                f"Start Date: {self.start_date}\n"
+                f"End Date: {self.end_date}\n"
+                f"Destinations:\n{destinations_str}")
+
+def main():
+    trip_name = input("Enter the trip name: ")
+    start_date = input("Enter the start date (YYYY-MM-DD): ")
+    end_date = input("Enter the end date (YYYY-MM-DD): ")
+
+    trip = Trip(trip_name, start_date, end_date)
+
+    while True:
+        destination_name = input("Enter destination name (or type 'done' to finish): ")
+        if destination_name.lower() == 'done':
+            break
+
+        destination = Destination(destination_name)
+
+        while True:
+            activity_name = input(f"Enter activity for {destination_name} (or type 'done' to finish): ")
+            if activity_name.lower() == 'done':
+                break
+            activity_time = input("Enter the time for this activity (e.g., '10:00 AM'): ")
+            activity = Activity(activity_name, activity_time)
+            destination.add_activity(activity)
+
+        trip.add_destination(destination)
+
+    print("\nYour Travel Itinerary:")
+    print(trip)
+
+if __name__ == "__main__":
+    main()
